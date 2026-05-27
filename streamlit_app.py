@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import google.generativeai as genai
 
 # 1. Page Configuration
 st.set_page_config(page_title="Reggae Prompt Generator", page_icon="🎵", layout="centered")
@@ -9,12 +9,12 @@ st.title("🎵 Reggae Image Prompt Generator")
 st.markdown("Streamline your creative workflow for *Blazin' Reggae Vibes* and *Roots Alternatives*.")
 st.markdown("---")
 
-# 3. Sidebar Configuration (Your Dropdowns)
+# 3. Sidebar Configuration
 st.sidebar.header("🎨 Prompt Settings")
 
 aspect_ratio = st.sidebar.selectbox(
     "Aspect Ratio", 
-    ["9:16 (Reels/Shorts)", "4:5 (Instagram)", "16:9 (Landscape)", "1:1 (Square)"]
+    ["9:16", "4:5", "16:9", "1:1"]
 )
 
 visual_style = st.sidebar.selectbox(
@@ -32,17 +32,21 @@ color_palette = st.sidebar.selectbox(
     ["Red, gold & green", "Earth tones", "Ocean & sky", "Fire & amber", "Midnight indigo"]
 )
 
-# 4. Main Main Input Fields
+# 4. Main Input Fields
 input_type = st.radio("Input Type", ["Single Affirmation", "Song Lyrics Sequence"])
 
 if input_type == "Single Affirmation":
     user_text = st.text_area("Enter your affirmation:", placeholder="Type or paste your affirmation here...")
 else:
-    user_text = st.text_area("Enter your song lyrics:", placeholder="Paste lyrics here. The app will generate a sequential narrative layout...", height=200)
+    user_text = st.text_area("Enter your song lyrics:", placeholder="Paste lyrics here. The app will split this into a multi-prompt sequence...", height=200)
 
-# 5. The Master System Instructions (The "Brain")
+# Secure API Key input right in the app UI for convenience
+st.sidebar.markdown("---")
+api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
+
+# 5. The Master System Instructions
 system_prompt = f"""
-You are an expert AI Image Prompt Generator tailored for DALL-E 3 (ChatGPT) and Imagen 3 (Gemini). 
+You are an expert AI Image Prompt Generator built specifically for roots-reggae content creation, tailored perfectly for DALL-E 3 (ChatGPT) and Imagen 3 (Gemini). 
 Your job is to transform the user's input into a highly vivid, atmospheric, single-paragraph image prompt based on these configurations:
 - Aspect Ratio: {aspect_ratio}
 - Visual Style: {visual_style}
@@ -50,38 +54,38 @@ Your job is to transform the user's input into a highly vivid, atmospheric, sing
 - Color Palette: {color_palette}
 
 CRITICAL CONSTRAINTS:
-1. OUTPUT FORMAT: Output ONLY the final, seamless, copy-and-pasteable paragraph for the image prompt. No introductory text, no labels like "Scene:" or "Style:". Just the prose.
+1. OUTPUT FORMAT: Output ONLY the final, seamless, copy-and-pasteable paragraph for the image prompt. No introductory text, no conversational filler, and no structural labels like "Scene:" or "Style:". Just the raw descriptive prose.
 2. ABSOLUTE NEGATIVE RESTRAINTS: Never include text, words, lettering, logos, or five-pointed stars anywhere in the scene description.
-3. If the user selected 'Song Lyrics Sequence', break the lyrics down chronologically into separate concept blocks. For EACH block, generate a distinct, standalone image prompt paragraph that flows logically. Number them clearly: 'Prompt 1:', 'Prompt 2:', etc.
+3. MODEL OPTIMIZATION: Write in fluid, highly descriptive sentences that paint a clear visual picture.
+4. SEQUENTIAL LYRICS: If the user selected 'Song Lyrics Sequence', break the lyrics down chronologically into separate logical scene blocks (e.g., matching a 6 or 9 prompt layout for a full video sequence). For EACH block, generate a distinct, standalone image prompt paragraph that flows narrative-wise from the last. Number them clearly: 'Prompt 1:', 'Prompt 2:', etc.
 """
 
 # 6. Action Button
 if st.button("✨ Generate Prompt"):
-    if not user_text.strip():
+    if not api_key:
+        st.error("Please enter your Gemini API Key in the sidebar to proceed!")
+    elif not user_text.strip():
         st.warning("Please enter some text or lyrics first!")
     else:
-        with st.spinner("Engineering your custom prompt..."):
+        with st.spinner("Engineering your custom prompt using Gemini..."):
             try:
-                # Setup your OpenAI client (Assumes API key is set in environment or Streamlit secrets)
-                # If using Gemini's API instead, this section can easily switch to the Google GenerativeAI SDK
-                client = OpenAI()
+                # Configure the Gemini API
+                genai.configure(api_key=api_key)
                 
-                response = client.chat.completions.create(
-                    model="gpt-4o", # Or your preferred fast text model
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_text}
-                    ],
-                    temperature=0.7
+                # UPDATED: Using the active stable 2.5 production model
+                model = genai.GenerativeModel(
+                    model_name="gemini-2.5-flash",
+                    system_instruction=system_prompt
                 )
                 
-                result = response.choices[0].message.content
+                # Generate content
+                response = model.generate_content(user_text)
+                result = response.text
                 
                 # Display the result in a clean copy-paste box
                 st.markdown("### 📋 Your Generated Prompt")
-                st.text_area("Click anywhere inside to copy:", value=result, height=250)
+                st.text_area("Click anywhere inside to copy:", value=result, height=300)
                 st.success("Done! Ready to paste into ChatGPT or Gemini.")
                 
             except Exception as e:
-                st.error(f"Error connecting to AI backend: {e}")
-                st.info("Tip: Make sure you have your API key configured.")
+                st.error(f"Error connecting to Gemini backend: {e}")
