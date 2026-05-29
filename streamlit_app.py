@@ -17,7 +17,6 @@ aspect_ratio = st.sidebar.selectbox(
     ["9:16", "4:5", "16:9", "1:1"]
 )
 
-# UPDATED: Full suite of 10 tailored visual styles
 visual_style = st.sidebar.selectbox(
     "Visual Style", 
     [
@@ -34,9 +33,22 @@ visual_style = st.sidebar.selectbox(
     ]
 )
 
+# UPDATED: Full suite of 11 tailored mood/lighting settings
 mood_lighting = st.sidebar.selectbox(
     "Mood / Lighting", 
-    ["Golden hour", "Dawn breaking", "Cosmic night", "Lush midday", "Mystical fog"]
+    [
+        "Golden Hour",
+        "Dawn Breaking",
+        "Cosmic Night",
+        "Lush Midday",
+        "Mystical Fog",
+        "Nyabinghi Firelight",
+        "Desert Twilight",
+        "Rainy Season Glow",
+        "Neon Dub Glow",
+        "Incense Smoke Diffusion",
+        "Eclipse Twilight"
+    ]
 )
 
 color_palette = st.sidebar.selectbox(
@@ -58,7 +70,7 @@ else:
 st.sidebar.markdown("---")
 api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
 
-# 5. The Master System Instructions (The "Brain" updated with detailed rules for all 10 styles)
+# 5. The Master System Instructions (The "Brain" updated with full rules for all 10 styles and 11 lighting options)
 system_prompt = f"""
 You are an expert AI Content Engineer tailored for DALL-E 3 (ChatGPT) and Imagen 3 (Gemini), built specifically for roots-reggae content creation for the brands *Blazin’ Reggae Vibes* and *Roots Alternatives*. 
 Your job is to transform the user's input into a highly vivid, atmospheric, single-paragraph image prompt(s) based on these configurations:
@@ -78,6 +90,19 @@ STYLE GLOSSARY RULES:
 - Desert Reggae Fusion: Warm, expansive regional aesthetic. Merge Southwest desert elements like iconic cactus silhouettes and ancient petroglyph motifs seamlessly with a bold Rasta color palette.
 - Psychedelic Roots: Expansive, meditative consciousness content. Use swirling fluid patterns, melting forms, and hypnotic color shifts to convey deep meditation.
 - Vintage Vinyl: Nostalgic, respectful veteran artist features. Emulate analog warmth, rich film grain, soft focus, and subtle wear-and-tear edge effects.
+
+MOOD & LIGHTING GLOSSARY RULES:
+- Golden Hour: Warm, reverent, hopeful sunlight casting low-angle amber rays. Ensure a prominent, deeply shadowed foreground zone to allow for future text placement.
+- Dawn Breaking: Optimistic, fresh, awakening atmosphere. Soft light filtering through morning mist. Establish a distinct, atmospheric misty mid-ground layer.
+- Cosmic Night: Mystical, expansive, celestial vibe. Deep starry skies, cosmic nebulae, and high-vibration energy. Ensure a broad, plain, star-free zone or dark gradient background section specifically for captions.
+- Lush Midday: Vibrant, energetic, authentic mood. Intense, crisp tropical sunlight creating high contrast with deep, dark, sharp-edged shadows.
+- Mystical Fog: Introspective, sacred, mysterious setting. Thick, soft, swirling silver fog with a distinctly clear, high-visibility central foreground zone.
+- Nyabinghi Firelight: Communal, rhythmic, spiritual atmosphere. Warm, intense, flickering firelight illuminating faces from below, with a clean ambient space directly above the flame glow.
+- Desert Twilight: Expansive, grounded, regional feel. A vast Southwest horizon under a deep, smooth indigo twilight sky, creating a perfect canvas for high-contrast white or gold elements.
+- Rainy Season Glow: Cleansed, renewed, highly emotional environment. Wet, shimmering landscapes, soft diffused light, and glistening surfaces that reflect color.
+- Neon Dub Glow: Edgy, innovative, urban dancehall and tech-reggae vibe. Deep shadows punctuated by vibrant neon light accents, streaks, and glowing highlights that trace outlines.
+- Incense Smoke Diffusion: Meditative, intentional, sacred setting. Swirling, ethereal wisps of blue and white smoke filtering through the scene, leaving a perfectly clear, smoke-free foreground zone.
+- Eclipse Twilight: Prophetic, transitional, powerful cosmic milestone. A dark sky dominated by a brilliant golden solar corona ring, creating a striking natural frame around the central subject.
 
 CRITICAL CONSTRAINTS:
 1. OUTPUT FORMAT: Output ONLY the final, seamless, copy-and-pasteable content. Generate no introductory text, no conversational filler, and no structural labels like "Scene:" or "Style:".
