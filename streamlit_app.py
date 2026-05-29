@@ -33,7 +33,6 @@ visual_style = st.sidebar.selectbox(
     ]
 )
 
-# UPDATED: Full suite of 11 tailored mood/lighting settings
 mood_lighting = st.sidebar.selectbox(
     "Mood / Lighting", 
     [
@@ -51,9 +50,27 @@ mood_lighting = st.sidebar.selectbox(
     ]
 )
 
+# UPDATED: 15 Master-crafted thematic color palettes with specific hex profiles
 color_palette = st.sidebar.selectbox(
     "Colour Palette", 
-    ["Red, gold & green", "Earth tones", "Ocean & sky", "Fire & amber", "Midnight indigo"]
+    [
+        "Zion Radiance (#D4A017, #A0522D, #FFF8E1)",
+        "New Zion (#FFB6C1, #FFCC99, #E6E6FA)",
+        "Celestial Zion (#1A0033, #6A0DAD, #C0C0C0)",
+        "Tropical Roots (#006400, #C41E3A, #FFD700)",
+        "Veil of Wisdom (#C0C0C0, #9CAF88, #B19CD9)",
+        "Sacred Flame (#CC5500, #8B0000, #FFBF00)",
+        "Reggae del Norte (#2E1A47, #CC7357, #30D5C8)",
+        "Renewal Waters (#E8E8E8, #2F4F2F, #87CEEB)",
+        "Digital Roots (#9D00FF, #39FF14, #DC143C)",
+        "Sacred Herb (#E6E6FA, #F5E6D3, #9CAF88)",
+        "Prophetic Threshold (#0A0A0A, #FFD700, #4B0082)",
+        "Earth Medicine (#B35441, #6B8E23, #E6C9A8)",
+        "Ancestral Earth (#5D4037, #CC7722, #1B4D3E)",
+        "Zion Ascension (#4169E1, #E6BE8A, #F8F8FF)",
+        "Southwest Fusion (#9CAF88, #30D5C8, #CC7357)",
+        "High Vibration Gradient (#FF6B9D -> #4ECDC4 -> #FFD93D)"
+    ]
 )
 
 # 4. Main Input Fields
@@ -70,7 +87,7 @@ else:
 st.sidebar.markdown("---")
 api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
 
-# 5. The Master System Instructions (The "Brain" updated with full rules for all 10 styles and 11 lighting options)
+# 5. The Master System Instructions (The complete visual engine)
 system_prompt = f"""
 You are an expert AI Content Engineer tailored for DALL-E 3 (ChatGPT) and Imagen 3 (Gemini), built specifically for roots-reggae content creation for the brands *Blazin’ Reggae Vibes* and *Roots Alternatives*. 
 Your job is to transform the user's input into a highly vivid, atmospheric, single-paragraph image prompt(s) based on these configurations:
@@ -104,6 +121,25 @@ MOOD & LIGHTING GLOSSARY RULES:
 - Incense Smoke Diffusion: Meditative, intentional, sacred setting. Swirling, ethereal wisps of blue and white smoke filtering through the scene, leaving a perfectly clear, smoke-free foreground zone.
 - Eclipse Twilight: Prophetic, transitional, powerful cosmic milestone. A dark sky dominated by a brilliant golden solar corona ring, creating a striking natural frame around the central subject.
 
+COLOR PALETTE EMEDDING INSTRUCTIONS:
+Translate the selected palette setting into descriptive environmental features using its explicit color tones and respect the text layout zones described here:
+- Zion Radiance: Dominated by rich gold (#D4A017) and warm sienna brown (#A0522D) with clean ivory accents (#FFF8E1). Intentionally craft a dark, deep shadowed foreground region.
+- New Zion: Infused with soft pastel pink (#FFB6C1), warm apricot (#FFCC99), and ethereal lavender (#E6E6FA). Construct a thick, misty mid-ground layer cast in deep plum-tinted haze.
+- Celestial Zion: A rich night landscape of midnight violet (#1A0033) and deep royal purple (#6A0DAD) with bright metallic silver highlights (#C0C0C0). Ensure wide, plain, star-free negative spaces in the sky.
+- Tropical Roots: High-contrast mix of deep forest green (#006400), vibrant crimson red (#C41E3A), and bright selective gold (#FFD700). Create heavy, deep undergrowth shadows.
+- Veil of Wisdom: Ethereal silver (#C0C0C0), muted sage green (#9CAF88), and soft pastel lilac (#B19CD9). Ensure the center configuration is entirely clear and un-obscured.
+- Sacred Flame: Intense burnt orange (#CC5500), dark crimson maroon (#8B0000), and brilliant amber yellow (#FFBF00). Leave a distinct, clear open ambient space directly above any fire sources.
+- Reggae del Norte: Moody deep indigo-violet (#2E1A47), warm baked terracotta (#CC7357), and a brilliant accent of bright turquoise (#30D5C8). Paint a wide, clear, seamless upper twilight sky canvas.
+- Renewal Waters: Soft mist white (#E8E8E8), dark slate-forest green (#2F4F2F), and brilliant sky cerulean blue (#87CEEB). Emphasize wide, highly reflective, glistening water surfaces.
+- Digital Roots: Deep electric violet (#9D00FF), radioactive neon lime green (#39FF14), and rich crimson red (#DC143C). Embed high-vibrancy light streaks and sharp outline glows against a stark backdrop.
+- Sacred Herb: Ethereal lavender mist (#E6E6FA), soft warm sand cream (#F5E6D3), and organic dried sage green (#9CAF88). Maintain an un-obscured, completely clear foreground section.
+- Prophetic Threshold: Infinite midnight black (#0A0A0A), brilliant golden yellow (#FFD700), and deep indigo-violet (#4B0082). Embed a clear dark center framed elegantly by a prominent circular gold ring element.
+- Earth Medicine: Warm clay terracotta (#B35441), muted olive green (#6B8E23), and soft sand-beige (#E6C9A8). Craft a beautiful, natural landscape balancing warm soils and herbal flora elements.
+- Ancestral Earth: Rich dark walnut brown (#5D4037), deep rustic ochre gold (#CC7722), and vintage hunter green (#1B4D3E). Use historic, deeply rooted, weathered natural textures.
+- Zion Ascension: Brilliant royal blue (#4169E1), warm golden metallic wheat (#E6BE8A), and clean pearlescent white (#F8F8FF). Infuse subjects or elements with a soft, bright, radiating pearl glow.
+- Southwest Fusion: Soft sage desert green (#9CAF88), striking bright turquoise (#30D5C8), and warm baked clay terracotta (#CC7357). Blend arid geology seamlessly with vibrant accents.
+- High Vibration Gradient: A smooth, fluid, intentional modern sunset gradient flowing seamlessly from deep hot pink (#FF6B9D) to cool mint turquoise (#4ECDC4) and finishing in bright sunshine yellow (#FFD93D).
+
 CRITICAL CONSTRAINTS:
 1. OUTPUT FORMAT: Output ONLY the final, seamless, copy-and-pasteable content. Generate no introductory text, no conversational filler, and no structural labels like "Scene:" or "Style:".
 2. IMAGE PROMPT PARAGRAPH(S): For each requested scene block, generate a raw descriptive prose paragraph.
@@ -117,27 +153,4 @@ CRITICAL CONSTRAINTS:
 """
 
 # 6. Action Button
-if st.button("✨ Generate Prompt & Social Pack"):
-    if not api_key:
-        st.error("Please enter your Gemini API Key in the sidebar to proceed!")
-    elif not user_text.strip():
-        st.warning("Please enter some text or lyrics first!")
-    else:
-        with st.spinner("Engineering your custom prompts, thumbnail, and captions..."):
-            try:
-                genai.configure(api_key=api_key)
-                
-                model = genai.GenerativeModel(
-                    model_name="gemini-2.5-flash",
-                    system_instruction=system_prompt
-                )
-                
-                response = model.generate_content(user_text)
-                result = response.text
-                
-                st.markdown("### 📋 Your Generated Content Pack")
-                st.text_area("Click anywhere inside to copy everything:", value=result, height=450)
-                st.success("Done! Ready to use for your next reel.")
-                
-            except Exception as e:
-                st.error(f"Error connecting to Gemini backend: {e}")
+if st.button("✨
